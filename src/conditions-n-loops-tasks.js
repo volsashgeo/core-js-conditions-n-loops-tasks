@@ -392,30 +392,31 @@ function getSpiralMatrix(size) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  // const n = matrix.length;
-  // const copy = structuredClone(matrix);
+function rotateMatrix(matrix) {
+  const n = matrix.length;
 
-  // for (let i = 0; i < n; i += 1) {
-  //   for (let j = i + 1; j < n; j += 1) {
-  //     const temp = copy[i][j];
-  //     copy[i][j] = copy[j][i];
-  //     copy[j][i] = temp;
-  //   }
-  // }
+  function swap(matr, row1, col1, row2, col2) {
+    const result = matr;
 
-  // const mid = Math.floor(n / 2);
-  // for (let i = 0; i < n; i += 1) {
-  //   for (let j = 0; j < mid; j += 1) {
-  //     const targetIndex = n - 1 - j;
-  //     const temp = copy[i][j];
-  //     copy[i][j] = copy[i][targetIndex];
-  //     copy[i][targetIndex] = temp;
-  //   }
-  // }
+    const temp = result[row1][col1];
 
-  // return copy;
-  throw new Error('Not implemented');
+    result[row1][col1] = result[row2][col2];
+    result[row2][col2] = temp;
+  }
+
+  for (let i = 0; i < n; i += 1) {
+    for (let j = i + 1; j < n; j += 1) {
+      swap(matrix, i, j, j, i);
+    }
+  }
+
+  for (let i = 0; i < n; i += 1) {
+    for (let j = 0; j < Math.floor(n / 2); j += 1) {
+      swap(matrix, i, j, i, n - 1 - j);
+    }
+  }
+
+  return matrix;
 }
 
 /**
@@ -432,8 +433,49 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  const result = arr;
+
+  function quickSort(left, right) {
+    const pivot = result[Math.floor((left + right) / 2)];
+
+    let i = left;
+    let j = right;
+
+    while (i <= j) {
+      while (result[i] < pivot) {
+        i += 1;
+      }
+
+      while (result[j] > pivot) {
+        j -= 1;
+      }
+
+      if (i <= j) {
+        const temp = result[i];
+
+        result[i] = result[j];
+        result[j] = temp;
+
+        i += 1;
+        j -= 1;
+      }
+    }
+
+    if (left < j) {
+      quickSort(left, j);
+    }
+
+    if (i < right) {
+      quickSort(i, right);
+    }
+  }
+
+  if (result.length > 1) {
+    quickSort(0, result.length - 1);
+  }
+
+  return result;
 }
 
 /**
